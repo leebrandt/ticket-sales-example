@@ -1,0 +1,63 @@
+<h1>Register for SuperDuperConf</h1>
+
+<div class="ticket conf-only">
+  <span class="title">Conference Only Pass</span>
+  <span class="price">$295</span>
+  <button (click)="selectTicket('Conference Only', 295)">Register Now!</button>
+</div>
+
+<div class="ticket full">
+  <span class="title">Full Conference + Workshop Pass</span>
+  <span class="price">$395</span>
+  <span class="value">Best Value!</span>
+  <button (click)="selectTicket('Full Conference + Workshop', 395)">Register Now!</button>
+</div>
+
+<div class="ticket work-only">
+  <span class="title">Workshop Only Pass</span>
+  <span class="price">$195</span>
+  <button (click)="selectTicket('Workshop Only', 195)">Register Now!</button>
+</div>
+
+<div *ngIf="model.selectedTicket.price">
+
+  <form (submit)="purchaseTicket()" class="needs-validation" novalidate #regForm="ngForm">
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="model.firstName" required #firstName="ngModel">
+      <div [hidden]="firstName.valid || firstName.pristine" class="text-danger">First Name is required.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="model.lastName" required #lastName="ngModel">
+      <div [hidden]="lastName.valid || lastName.pristine" class="text-danger">Last Name is required.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address:</label>
+      <input type="text" class="form-control" name="email" id="email" [(ngModel)]="model.email" required #email="ngModel">
+      <div [hidden]="email.valid || email.pristine" class="text-danger">Email Address is required.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="cardNumber">Card Number:</label>
+      <input type="text" class="form-control" name="cardNumber" id="cardNumber" [(ngModel)]="model.card.number" required>
+    </div>
+
+    <div class="form-group form-inline">
+      <label for="expiry">Expiry:</label>
+      <br/>
+      <input type="text" class="form-control mb-1 mr-sm-1" name="expiryMonth" id="expiryMonth" [(ngModel)]="model.card.exp_month"
+        required> /
+      <input type="text" class="form-control" name="expiryYear" id="expiryYear" [(ngModel)]="model.card.exp_year" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cvc">Security Code:</label>
+      <input type="text" class="form-control" name="cvc" id="cvc" [(ngModel)]="model.card.cvc" required>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!regForm.form.valid">Pay ${{model.selectedTicket.price}}</button>
+  </form>
+
+</div>
