@@ -19,7 +19,7 @@
   <button (click)="selectTicket('Workshop Only', 195)">Register Now!</button>
 </div>
 
-<div *ngIf="model.selectedTicket.price">
+<div *ngIf="model.ticket.price">
 
   <form (submit)="purchaseTicket()" class="needs-validation" novalidate #regForm="ngForm">
     <div class="form-group">
@@ -36,8 +36,14 @@
 
     <div class="form-group">
       <label for="email">Email Address:</label>
-      <input type="text" class="form-control" name="email" id="email" [(ngModel)]="model.email" required #email="ngModel">
+      <input type="text" class="form-control" name="email" id="email" [(ngModel)]="model.emailAddress" required #email="ngModel">
       <div [hidden]="email.valid || email.pristine" class="text-danger">Email Address is required.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" name="password" id="password" [(ngModel)]="model.password" required #password="ngModel">
+      <div [hidden]="password.valid || password.pristine" class="text-danger">Password is required.</div>
     </div>
 
     <div class="form-group">
@@ -57,7 +63,7 @@
       <label for="cvc">Security Code:</label>
       <input type="text" class="form-control" name="cvc" id="cvc" [(ngModel)]="model.card.cvc" required>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!regForm.form.valid">Pay ${{model.selectedTicket.price}}</button>
+    <button type="submit" class="btn btn-success" [disabled]="!regForm.form.valid">Pay ${{model.ticket.price / 100}}</button>
   </form>
 
 </div>

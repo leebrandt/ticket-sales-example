@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registration',
@@ -9,25 +10,36 @@ export class RegistrationComponent {
   public model: any = {
     firstName: '',
     lastName: '',
-    email: '',
+    emailAddress: '',
+    password: '',
     card: { number: '', exp_month: '', exp_year: '', cvc: '' },
-    selectedTicket: { ticket: '', price: 0 }
+    token: '',
+    ticket: { ticketType: '', price: 0 }
   };
 
-  selectTicket(ticket: string, price: number) {
-    this.model.selectedTicket = { ticket, price };
+  constructor(
+    private http: HttpClient,
+    @Inject('BASE_URL') private baseUrl: string
+  ) {}
+
+  selectTicket(ticketType: string, price: number) {
+    this.model.ticket = { ticketType, price: price * 100 };
   }
 
   purchaseTicket() {
-    this.getToken();
-  }
-
-  getToken() {
     (<any>window).Stripe.card.createToken(
       this.model.card,
       (status: number, response: any) => {
         if (status === 200) {
-          console.log(`Success! Card token ${response.card.id}`);
+          this.model.token = response.id;
+          this.http
+            .post(this.baseUrl + 'api/registration', this.model)
+            .subscribe(
+              result => {
+                this.model = result;
+              },
+              error => console.error(error)
+            );
         } else {
           console.error(response.error.message);
         }
