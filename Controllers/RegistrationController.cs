@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Okta.Sdk;
@@ -37,6 +38,28 @@ namespace ticket_sales_example.Controllers
           Activate = true
         }
       );
+
+      var groupName = "";
+      if (registration.Ticket.TicketType == "Full Conference + Workshop")
+      {
+        groupName = "FullAttendees";
+      }
+      if (registration.Ticket.TicketType == "Conference Only")
+      {
+        groupName = "ConferenceOnlyAttendees";
+      }
+      if (registration.Ticket.TicketType == "Workshop Only")
+      {
+        groupName = "WorkshopOnlyAttendees";
+      }
+
+      var group = await client.Groups.FirstOrDefault(g => g.Profile.Name == groupName);
+      if (group != null && user != null)
+      {
+        await client.Groups.AddUserToGroupAsync(group.Id, user.Id);
+      }
+
+
 
       return user as User;
     }

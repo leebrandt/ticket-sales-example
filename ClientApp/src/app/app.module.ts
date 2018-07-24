@@ -3,7 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { OktaCallbackComponent, OktaAuthModule } from '@okta/okta-angular';
+import {
+  OktaCallbackComponent,
+  OktaAuthModule,
+  OktaAuthGuard
+} from '@okta/okta-angular';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -39,7 +43,11 @@ const config = {
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'register', component: RegistrationComponent },
-      { path: 'profile', component: ProfileComponent },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [OktaAuthGuard]
+      },
       { path: 'implicit/callback', component: OktaCallbackComponent }
     ])
   ],

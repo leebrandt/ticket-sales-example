@@ -9,17 +9,21 @@ import 'rxjs/Rx';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  user: any;
   ticket: string;
-  constructor(private oktaAuth: OktaAuthService, private http: Http) {}
+
+  constructor(private oktaAuth: OktaAuthService) {}
 
   async ngOnInit() {
-    const accessToken = await this.oktaAuth.getAccessToken();
-    const headers = new Headers({
-      Authorization: 'Bearer ' + accessToken
-    });
-    this.http
-      .get('/api/ticket', new RequestOptions({ headers: headers }))
-      .map(res => res.json())
-      .subscribe((ticket: string) => (this.ticket = ticket));
+    this.user = await this.oktaAuth.getUser();
+    if (this.user.groups.includes('FullAttendees')) {
+      this.ticket = 'Full Conference + Workshop';
+    } else if (this.user.groups.includes('ConferenceOnlyAttendees')) {
+      this.ticket = 'Conference Only';
+    } else if (this.user.groups.includes('WorkshopOnlyAttendees')) {
+      this.ticket = 'Workshop Only';
+    } else {
+      this.ticket = 'None';
+    }
   }
 }
