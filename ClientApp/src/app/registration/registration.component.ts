@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-registration',
@@ -12,10 +12,7 @@ export class RegistrationComponent {
   public errorMessage: string = '';
   public successMessage: string = '';
 
-  constructor(
-    private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string
-  ) {
+  constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
     this.resetModel();
   }
 
