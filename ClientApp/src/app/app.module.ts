@@ -11,6 +11,12 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { RegistrationComponent } from './registration/registration.component';
 
+const config = {
+  issuer: 'https://dev-846291.oktapreview.com/oauth2/default',
+  redirectUri: 'http://localhost:5000',
+  clientId: '0oafsfliqnld9fEfo0h7'
+};
+
 @NgModule({
   declarations: [
     AppComponent,

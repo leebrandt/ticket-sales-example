@@ -19,6 +19,9 @@
   <button (click)="selectTicket('Workshop Only', 195)">Register Now!</button>
 </div>
 
+<div class="alert alert-success" *ngIf="model.successMessage">{{successMessage}}</div>
+<div class="alert alert-danger" *ngIf="model.errorMessage">{{errorMessage}}</div>
+
 <div *ngIf="model.ticket.price">
 
   <form (submit)="purchaseTicket()" class="needs-validation" novalidate #regForm="ngForm">

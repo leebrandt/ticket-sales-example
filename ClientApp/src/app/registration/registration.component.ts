@@ -7,20 +7,29 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-  public model: any = {
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    password: '',
-    card: { number: '', exp_month: '', exp_year: '', cvc: '' },
-    token: '',
-    ticket: { ticketType: '', price: 0 }
-  };
+  public model: any;
+
+  public errorMessage: string = '';
+  public successMessage: string = '';
 
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string
-  ) {}
+  ) {
+    this.resetModel();
+  }
+
+  resetModel(): any {
+    this.model = {
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      password: '',
+      card: { number: '', exp_month: '', exp_year: '', cvc: '' },
+      token: '',
+      ticket: { ticketType: '', price: 0 }
+    };
+  }
 
   selectTicket(ticketType: string, price: number) {
     this.model.ticket = { ticketType, price: price * 100 };
@@ -36,11 +45,13 @@ export class RegistrationComponent {
             .post(this.baseUrl + 'api/registration', this.model)
             .subscribe(
               result => {
-                this.model = result;
+                this.resetModel();
+                this.successMessage = 'Thank you for purchasing a ticket!';
               },
               error => console.error(error)
             );
         } else {
+          this.errorMessage = 'There was a problem purchasing the ticket.';
           console.error(response.error.message);
         }
       }
