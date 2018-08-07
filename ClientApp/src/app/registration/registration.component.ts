@@ -8,12 +8,17 @@ import { Http } from '@angular/http';
 })
 export class RegistrationComponent {
   public model: any;
+  public card: any;
 
-  public errorMessage: string = '';
-  public successMessage: string = '';
+  public error: boolean;
+  public errorMessage: string;
+  public success: boolean;
+  public successMessage: string;
 
   constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
     this.resetModel();
+    this.successMessage = this.errorMessage = null;
+    this.success = this.error = false;
   }
 
   resetModel(): any {
@@ -22,10 +27,10 @@ export class RegistrationComponent {
       lastName: '',
       emailAddress: '',
       password: '',
-      card: { number: '', exp_month: '', exp_year: '', cvc: '' },
       token: '',
       ticket: { ticketType: '', price: 0 }
     };
+    this.card = { number: '', exp_month: '', exp_year: '', cvc: '' };
   }
 
   selectTicket(ticketType: string, price: number) {
@@ -34,18 +39,25 @@ export class RegistrationComponent {
 
   purchaseTicket() {
     (<any>window).Stripe.card.createToken(
-      this.model.card,
+      this.card,
       (status: number, response: any) => {
         if (status === 200) {
           this.model.token = response.id;
           this.http
             .post(this.baseUrl + 'api/registration', this.model)
+            .map(result => result.json())
             .subscribe(
               result => {
                 this.resetModel();
                 this.successMessage = 'Thank you for purchasing a ticket!';
+                this.success = true;
+                console.log(this.successMessage);
               },
-              error => console.error(error)
+              error => {
+                this.errorMessage = 'There was a problem registering you.';
+                this.error = true;
+                console.error(error);
+              }
             );
         } else {
           this.errorMessage = 'There was a problem purchasing the ticket.';

@@ -19,8 +19,9 @@
   <button (click)="selectTicket('Workshop Only', 195)">Register Now!</button>
 </div>
 
-<div class="alert alert-success" *ngIf="model.successMessage">{{successMessage}}</div>
-<div class="alert alert-danger" *ngIf="model.errorMessage">{{errorMessage}}</div>
+<div class="alert alert-success" *ngIf="(success$ | async) as success">{{successMessage}}</div>
+<div class="alert alert-danger" *ngIf="(error$ | async) as error">{{errorMessage}}</div>
+
 
 <div *ngIf="model.ticket.price">
 
@@ -51,20 +52,19 @@
 
     <div class="form-group">
       <label for="cardNumber">Card Number:</label>
-      <input type="text" class="form-control" name="cardNumber" id="cardNumber" [(ngModel)]="model.card.number" required>
+      <input type="text" class="form-control" name="cardNumber" id="cardNumber" [(ngModel)]="card.number" required>
     </div>
 
     <div class="form-group form-inline">
       <label for="expiry">Expiry:</label>
       <br/>
-      <input type="text" class="form-control mb-1 mr-sm-1" name="expiryMonth" id="expiryMonth" [(ngModel)]="model.card.exp_month"
-        required> /
-      <input type="text" class="form-control" name="expiryYear" id="expiryYear" [(ngModel)]="model.card.exp_year" required>
+      <input type="text" class="form-control mb-1 mr-sm-1" name="expiryMonth" id="expiryMonth" [(ngModel)]="card.exp_month" required> /
+      <input type="text" class="form-control" name="expiryYear" id="expiryYear" [(ngModel)]="card.exp_year" required>
     </div>
 
     <div class="form-group">
       <label for="cvc">Security Code:</label>
-      <input type="text" class="form-control" name="cvc" id="cvc" [(ngModel)]="model.card.cvc" required>
+      <input type="text" class="form-control" name="cvc" id="cvc" [(ngModel)]="card.cvc" required>
     </div>
     <button type="submit" class="btn btn-success" [disabled]="!regForm.form.valid">Pay ${{model.ticket.price / 100}}</button>
   </form>
