@@ -19,9 +19,8 @@
   <button (click)="selectTicket('Workshop Only', 195)">Register Now!</button>
 </div>
 
-<div class="alert alert-success" *ngIf="(success$ | async) as success">{{successMessage}}</div>
-<div class="alert alert-danger" *ngIf="(error$ | async) as error">{{errorMessage}}</div>
-
+<div class="alert alert-success" *ngIf="successMessage">{{successMessage}}</div>
+<div class="alert alert-danger" *ngIf="errorMessage">{{errorMessage}}</div>
 
 <div *ngIf="model.ticket.price">
 
