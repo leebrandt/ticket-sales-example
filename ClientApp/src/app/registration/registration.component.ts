@@ -45,7 +45,6 @@ export class RegistrationComponent {
           this.model.token = response.id;
           this.http
             .post(this.baseUrl + 'api/registration', this.model)
-            .map(result => result.json())
             .subscribe(
               result => {
                 this.resetModel();
@@ -55,7 +54,6 @@ export class RegistrationComponent {
               },
               error => {
                 this.errorMessage = 'There was a problem registering you.';
-                this.error = true;
                 console.error(error);
               }
             );
