@@ -10,15 +10,12 @@ export class RegistrationComponent {
   public model: any;
   public card: any;
 
-  public error: boolean;
   public errorMessage: string;
-  public success: boolean;
   public successMessage: string;
 
   constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
     this.resetModel();
     this.successMessage = this.errorMessage = null;
-    this.success = this.error = false;
   }
 
   resetModel(): any {
@@ -49,7 +46,6 @@ export class RegistrationComponent {
               result => {
                 this.resetModel();
                 this.successMessage = 'Thank you for purchasing a ticket!';
-                this.success = true;
                 console.log(this.successMessage);
               },
               error => {
